@@ -41,8 +41,8 @@ export class OpenRouterProvider implements ChatProvider {
                 apiKey: this.apiKey,
                 baseURL: 'https://openrouter.ai/api/v1',
                 defaultHeaders: {
-                    'HTTP-Referer': 'https://github.com/jleznek/sefaria-chat',
-                    'X-Title': 'Sefaria Chat',
+                    'HTTP-Referer': 'https://github.com/jleznek/torah-chat',
+                    'X-Title': 'Torah Chat',
                 },
             });
         }
@@ -120,12 +120,41 @@ export class OpenRouterProvider implements ChatProvider {
             }))
             : undefined;
 
-        const stream = await client.chat.completions.create({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const createParams: any = {
             model: this.model,
             messages,
             tools: openaiTools,
             stream: true,
-        }, signal ? { signal } : {});
+        };
+
+        // Tell OpenRouter to route to a provider that supports tool use
+        if (openaiTools) {
+            createParams.provider = { require_parameters: true };
+        }
+
+        let stream;
+        try {
+            stream = await client.chat.completions.create(
+                createParams,
+                signal ? { signal } : {},
+            );
+        } catch (err: unknown) {
+            // If no tool-capable endpoint exists, retry without tools and let
+            // the text-based function call extraction in ChatEngine handle it.
+            const msg = err instanceof Error ? err.message : String(err);
+            if (msg.includes('No endpoints found') && openaiTools) {
+                const fallback = { ...createParams };
+                delete fallback.tools;
+                delete fallback.provider;
+                stream = await client.chat.completions.create(
+                    fallback,
+                    signal ? { signal } : {},
+                );
+            } else {
+                throw err;
+            }
+        }
 
         let text = '';
         const toolCallsMap: Map<number, { id: string; name: string; args: string }> = new Map();

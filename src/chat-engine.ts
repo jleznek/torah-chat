@@ -114,7 +114,7 @@ export class ChatEngine {
         // Build system prompt with response length preference
         let systemContent = SEFARIA_SYSTEM_PROMPT;
         if (responseLength === 'concise') {
-            systemContent += '\n\nIMPORTANT: The user has requested a CONCISE response. Keep your answer brief and to the point — a few sentences to a short paragraph. Focus on the key facts. Omit lengthy commentary unless specifically asked.';
+            systemContent += '\n\nIMPORTANT: The user has requested a CONCISE response. Keep your prose brief — short paragraphs, minimal commentary. However, when you retrieve data from tools (texts, translations, search results), still present the actual content. Do not merely summarize what the tool returned — show the substance (e.g., the actual text, the actual translations side by side). Just keep your surrounding commentary concise.';
         } else if (responseLength === 'detailed') {
             systemContent += '\n\nIMPORTANT: The user has requested a DETAILED response. Provide a comprehensive, thorough answer. Include extensive commentary, multiple perspectives, cross-references, historical context, and full Hebrew/Aramaic text with translations.';
         } else {
@@ -165,6 +165,16 @@ export class ChatEngine {
                     signal,
                 );
                 this.recordRequest();
+
+                // Some models (e.g. Llama on Groq) output function calls as
+                // plain JSON text instead of using structured tool calling.
+                // Detect and promote these so the tool loop can execute them.
+                if (result.functionCalls.length === 0 && result.text) {
+                    const extracted = this.extractTextFunctionCalls(result.text, tools);
+                    if (extracted.length > 0) {
+                        result.functionCalls.push(...extracted);
+                    }
+                }
 
                 // If no function calls, save the final response and stop
                 if (result.functionCalls.length === 0) {
@@ -255,6 +265,54 @@ export class ChatEngine {
         }
 
         this.activeAbort = null;
+    }
+
+    /**
+     * Some models embed tool invocations as plain JSON text rather than using
+     * the structured function-calling mechanism. This scans the response text
+     * for JSON objects that match an available tool and returns them as
+     * synthetic function calls so the normal tool loop can execute them.
+     */
+    private extractTextFunctionCalls(
+        text: string,
+        tools: Array<{ name: string }>,
+    ): Array<{ name: string; args: Record<string, unknown>; id: string }> {
+        const toolNames = new Set(tools.map(t => t.name));
+        const calls: Array<{ name: string; args: Record<string, unknown>; id: string }> = [];
+
+        for (let i = 0; i < text.length; i++) {
+            if (text[i] !== '{') continue;
+            // Brace-match to find the complete JSON object
+            let depth = 0;
+            let j = i;
+            for (; j < text.length; j++) {
+                if (text[j] === '{') depth++;
+                else if (text[j] === '}') depth--;
+                if (depth === 0) break;
+            }
+            if (depth !== 0) continue;
+
+            const candidate = text.substring(i, j + 1);
+            try {
+                const obj = JSON.parse(candidate);
+                if (
+                    typeof obj.name === 'string' &&
+                    toolNames.has(obj.name) &&
+                    (obj.parameters || obj.arguments)
+                ) {
+                    calls.push({
+                        name: obj.name,
+                        args: (obj.parameters || obj.arguments) as Record<string, unknown>,
+                        id: `text_${obj.name}_${Date.now()}`,
+                    });
+                }
+            } catch {
+                // Not valid JSON — skip
+            }
+            i = j;
+        }
+
+        return calls;
     }
 
     clearHistory(): void {

@@ -1,6 +1,6 @@
-# Sefaria Chat — Development Conversation Log
+# Torah Chat — Development Conversation Log
 
-A reconstructed timeline of the collaborative development session between a developer and GitHub Copilot (Claude Opus 4.6) that built, polished, and published the Sefaria Chat desktop application. This entire session took place on February 10, 2026 in VS Code.
+A reconstructed timeline of the collaborative development session between a developer and GitHub Copilot (Claude Opus 4.6) that built, polished, and published the Torah Chat desktop application. This entire session took place on February 10, 2026 in VS Code.
 
 ---
 
@@ -16,7 +16,7 @@ The project began as a working Electron app with a chat UI connected to Google G
 
 **Copilot:** Configured electron-builder in package.json with NSIS installer and portable executable targets. Set up app metadata (appId, productName, icon, file patterns). Ran `npm run dist:win` to build. Produced an ARM64 installer and portable exe in the `release/` directory.
 
-**Result:** First working installer — `Sefaria Chat-Setup-1.0.0-arm64.exe` (~87 MB) and `Sefaria Chat-Portable-1.0.0-arm64.exe`.
+**Result:** First working installer — `Torah Chat-Setup-1.0.0-arm64.exe` (~87 MB) and `Torah Chat-Portable-1.0.0-arm64.exe`.
 
 ---
 
@@ -71,7 +71,7 @@ The function protects existing markdown links and code blocks from double-linkin
 
 Chromium's built-in PDF viewer provides a toolbar with print, download, zoom, and page navigation — all within the app itself.
 
-**Result:** Print preview now works entirely within the Sefaria Chat window. No external applications involved.
+**Result:** Print preview now works entirely within the Torah Chat window. No external applications involved.
 
 ---
 
@@ -100,12 +100,12 @@ Fixes applied:
 **You:** "I would like to create an x64 version as well, and then package and publish them on GitHub."
 
 **Copilot:** Updated package.json build targets to produce both x64 and arm64 variants with distinct filenames:
-- `Sefaria Chat-Setup-{version}-x64.exe` / `-arm64.exe`
-- `Sefaria Chat-Portable-{version}-x64.exe` / `-arm64.exe`
+- `Torah Chat-Setup-{version}-x64.exe` / `-arm64.exe`
+- `Torah Chat-Portable-{version}-x64.exe` / `-arm64.exe`
 
 Built all 4 executables. Created a git tag and pushed. Used `gh release create` to publish a GitHub release with release notes and all artifacts attached.
 
-**Result:** Release published at `github.com/jleznek-MSFT/sefaria-chat/releases/tag/v1.0.0` with 4 executables.
+**Result:** Release published at `github.com/jleznek-MSFT/torah-chat/releases/tag/v1.0.0` with 4 executables.
 
 ---
 
@@ -117,13 +117,13 @@ Built all 4 executables. Created a git tag and pushed. Used `gh release create` 
 
 Created a code signing certificate using PowerShell:
 ```
-New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Sefaria Chat, O=Sefaria"
+New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Torah Chat, O=Sefaria"
 ```
 Certificate created with thumbprint `E8D41E0D8817722F306BE7F30E9C092F5BEBE9FB`, expiring February 2029.
 
 Configured electron-builder's `win.signtoolOptions` in package.json. Hit an issue: electron-builder's cached `signtool.exe` didn't include an ARM64 binary (ENOENT error). Fixed by copying the x64 `signtool.exe` to the ARM64 cache directory — ARM64 Windows runs x64 binaries via emulation.
 
-Rebuilt all executables — all signed successfully. Verified signatures show "CN=Sefaria Chat, O=Sefaria" with SHA-256 signing and DigiCert timestamping.
+Rebuilt all executables — all signed successfully. Verified signatures show "CN=Torah Chat, O=Sefaria" with SHA-256 signing and DigiCert timestamping.
 
 **Result:** All executables are code-signed. Windows SmartScreen still shows a warning (expected for self-signed certs), but the signature proves files haven't been tampered with.
 
@@ -147,9 +147,9 @@ Rebuilt all executables — all signed successfully. Verified signatures show "C
 
 **You:** "I authenticated."
 
-**Copilot:** Verified `jleznek` was now the active account. Used `gh repo create jleznek/sefaria-chat --public --source=. --remote=jleznek --push` to create the repo and push all code. Built fresh, tagged v1.1.0, and created a GitHub release with all 4 signed executables.
+**Copilot:** Verified `jleznek` was now the active account. Used `gh repo create jleznek/torah-chat --public --source=. --remote=jleznek --push` to create the repo and push all code. Built fresh, tagged v1.1.0, and created a GitHub release with all 4 signed executables.
 
-**Result:** Published at `github.com/jleznek/sefaria-chat/releases/tag/v1.1.0`.
+**Result:** Published at `github.com/jleznek/torah-chat/releases/tag/v1.1.0`.
 
 ---
 
@@ -177,7 +177,7 @@ Rebuilt all executables — all signed successfully. Verified signatures show "C
 - Updated "Requirements" to cover both cloud and local usage
 - Added new features: in-app text viewer, print preview, citation auto-linking
 
-Committed and pushed to `jleznek/sefaria-chat`.
+Committed and pushed to `jleznek/torah-chat`.
 
 ---
 
@@ -207,7 +207,7 @@ Committed and pushed to `jleznek/sefaria-chat`.
 
 ## Summary
 
-In a single development session, the Sefaria Chat app went from a dev-only project to a published, signed, multi-architecture desktop application with:
+In a single development session, the Torah Chat app went from a dev-only project to a published, signed, multi-architecture desktop application with:
 
 - 4 AI provider integrations (cloud + local)
 - Automatic citation hyperlinking

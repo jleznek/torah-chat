@@ -1,8 +1,8 @@
-# Privacy Policy for Sefaria Chat
+# Privacy Policy for Torah Chat
 
 *Last updated: February 15, 2026*
 
-Sefaria Chat does not collect, store, or transmit any personal data to the app developer.
+Torah Chat does not collect, store, or transmit any personal data to the app developer.
 
 ## Data stored locally on your device
 
@@ -18,7 +18,7 @@ When you use the app, your messages are sent directly from your device to the AI
 
 ## No analytics or telemetry
 
-Sefaria Chat does not include any analytics, telemetry, crash reporting, or tracking of any kind.
+Torah Chat does not include any analytics, telemetry, crash reporting, or tracking of any kind.
 
 ## Contact
 

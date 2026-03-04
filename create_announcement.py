@@ -1,4 +1,4 @@
-"""Generate a formatted Word document announcement for Sefaria Chat."""
+"""Generate a formatted Word document announcement for Torah Chat."""
 from docx import Document
 from docx.shared import Inches, Pt, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -78,7 +78,7 @@ def set_cell_shading(cell, color_hex):
 # ============================================================
 # TITLE
 # ============================================================
-title = doc.add_heading('Sefaria Chat', level=1)
+title = doc.add_heading('Torah Chat', level=1)
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
 for run in title.runs:
     run.font.size = Pt(28)
@@ -113,7 +113,7 @@ run.font.size = Pt(12)
 run.font.color.rgb = RGBColor(0x1A, 0x47, 0x8A)
 
 doc.add_paragraph(
-    'Sefaria Chat is a free, open-source desktop app that connects the world\u2019s largest '
+    'Torah Chat is a free, open-source desktop app that connects the world\u2019s largest '
     'digital collection of Jewish texts \u2014 Torah, Talmud, Midrash, Halakha, Kabbalah, '
     'philosophy, and more \u2014 to the AI model of your choice. Ask a question in plain English, '
     'and the AI automatically searches Sefaria\u2019s library, retrieves primary sources with '
@@ -164,7 +164,7 @@ p.add_run('Click any source and it opens right inside the app in a side-by-side 
 doc.add_heading('Use Any AI Model \u2014 Online or Offline', level=2)
 
 doc.add_paragraph(
-    'Sefaria Chat supports 9 LLM providers with dozens of models, so you pick what works for you:'
+    'Torah Chat supports 9 LLM providers with dozens of models, so you pick what works for you:'
 )
 
 # Provider table
@@ -253,7 +253,7 @@ for feat_name, feat_desc in features:
 doc.add_heading('Get Started', level=2)
 
 steps = [
-    'Download Sefaria Chat (available on Windows, including the Microsoft Store)',
+    'Download Torah Chat (available on Windows, including the Microsoft Store)',
     'Pick a provider (try Gemini for free, or Ollama for fully offline)',
     'Start asking questions!',
 ]
@@ -286,12 +286,12 @@ run.font.color.rgb = RGBColor(0x1A, 0x47, 0x8A)
 doc.add_paragraph()
 p = doc.add_paragraph()
 p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = p.add_run('Sefaria Chat is an independent project and is not developed by or affiliated with Sefaria.org.')
+run = p.add_run('Torah Chat is an independent project and is not developed by or affiliated with Sefaria.org.')
 run.italic = True
 run.font.size = Pt(9)
 run.font.color.rgb = RGBColor(0x99, 0x99, 0x99)
 
 # Save
-output_path = os.path.join(os.path.dirname(__file__), 'Sefaria Chat Announcement.docx')
+output_path = os.path.join(os.path.dirname(__file__), 'Torah Chat Announcement.docx')
 doc.save(output_path)
 print(f'Saved: {output_path}')

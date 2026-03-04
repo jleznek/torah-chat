@@ -1,4 +1,4 @@
-# Sefaria Chat
+# Torah Chat
 
 A desktop app for exploring the [Sefaria](https://www.sefaria.org/) library of Jewish texts, powered by AI and [Sefaria's MCP servers](https://developers.sefaria.org/docs/the-sefaria-mcp).
 

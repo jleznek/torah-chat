@@ -1,7 +1,7 @@
 {
-  "name": "sefaria",
-  "productName": "Sefaria Chat",
-  "version": "1.1.0",
+  "name": "torah-chat",
+  "productName": "Torah Chat",
+  "version": "1.2.0",
   "description": "Explore Jewish texts from the Sefaria digital library, powered by AI",
   "author": {
     "name": "Jason Leznek"
@@ -13,7 +13,7 @@
     "watch": "npm-run-all -p watch:*",
     "watch:esbuild": "node esbuild.js --watch",
     "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "copy-renderer": "node -e \"const fs=require('fs');const path=require('path');fs.mkdirSync('dist/renderer',{recursive:true});for(const f of['index.html','styles.css','renderer.js'])fs.copyFileSync(path.join('src/renderer',f),path.join('dist/renderer',f));\"",
+    "copy-renderer": "node -e \"const fs=require('fs');const path=require('path');fs.mkdirSync('dist/renderer',{recursive:true});for(const f of['index.html','styles.css','renderer.js','powered-by-sefaria.png'])fs.copyFileSync(path.join('src/renderer',f),path.join('dist/renderer',f));\"",
     "build": "npm run compile",
     "start": "npm run build && electron .",
     "check-types": "tsc --noEmit",
@@ -39,8 +39,8 @@
     "typescript-eslint": "^8.54.0"
   },
   "build": {
-    "appId": "org.sefaria.desktop",
-    "productName": "Sefaria Chat",
+    "appId": "com.jasonleznek.torahchat",
+    "productName": "Torah Chat",
     "icon": "assets/icon.png",
     "files": [
       "dist/**/*",
@@ -61,23 +61,16 @@
           ]
         }
       ],
-      "icon": "assets/icon.ico",
-      "signtoolOptions": {
-        "publisherName": "Sefaria Chat",
-        "signingHashAlgorithms": [
-          "sha256"
-        ],
-        "certificateSha1": "2D04763C2A9653DE2D316790429DC8F4A18E0B74"
-      }
+      "icon": "assets/icon.ico"
     },
     "appx": {
-      "identityName": "JasonLeznek.SefariaChat",
+      "identityName": "JasonLeznek.TorahChat",
       "publisher": "CN=542357D7-3FB8-4981-A7C6-D9CD31401BA0",
       "publisherDisplayName": "Jason Leznek",
-      "applicationId": "SefariaChat",
-      "displayName": "Sefaria Chat",
+      "applicationId": "TorahChat",
+      "displayName": "Torah Chat",
       "languages": ["en-US"],
-      "artifactName": "Sefaria Chat ${version} ${arch}.${ext}"
+      "artifactName": "Torah Chat ${version} ${arch}.${ext}"
     },
     "mac": {
       "target": [

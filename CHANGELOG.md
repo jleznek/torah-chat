@@ -1,6 +1,6 @@
 # Change Log
 
-All notable changes to Sefaria Chat will be documented in this file.
+All notable changes to Torah Chat will be documented in this file.
 
 ## [1.1.0]
 
@@ -13,7 +13,7 @@ All notable changes to Sefaria Chat will be documented in this file.
 
 ## [1.0.0]
 
-- **Microsoft Store release** — Sefaria Chat is now available in the Microsoft Store
+- **Microsoft Store release** — Torah Chat is now available in the Microsoft Store
 - **Store-aware updates** — Update check UI is automatically hidden for Store installs (updates come through the Store)
 - **Changelog fix** — Changelog and version info now display correctly in all distribution types
 - **Ollama 404 fix** — Missing Ollama models now show a helpful "pull" command instead of a generic error

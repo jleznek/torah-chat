@@ -1,4 +1,4 @@
-# Sefaria Desktop – Electron App
+# Torah Chat – Electron App
 
 ## Project Overview
 A standalone Electron desktop application for exploring the Sefaria digital library of Jewish texts via AI-powered chat. The app uses MCP (Model Context Protocol) to query Sefaria's servers and supports 7 LLM providers.

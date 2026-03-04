@@ -841,7 +841,7 @@ async function resetToWelcome() {
     const cards = buildPromptCardsHtml(pickRandomPrompts(6));
     messagesDiv.innerHTML = `
         <div class="welcome-message">
-            <h2>Welcome to Sefaria Chat</h2>
+            <h2>Welcome to Torah Chat</h2>
             <p>Ask about Jewish texts, explore the library, or dive into Torah topics.</p>
             <div class="suggested-prompts">
                         ${cards}
@@ -867,7 +867,7 @@ printBtn.addEventListener('click', () => {
     const msgs = messagesDiv.cloneNode(true);
     // Remove non-printable elements
     msgs.querySelectorAll('.follow-ups, .tool-indicators, .thinking-indicator').forEach(el => el.remove());
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Sefaria Chat</title>
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>Torah Chat</title>
 <style>
   body { font-family: 'Segoe UI', sans-serif; max-width: 720px; margin: 0 auto; padding: 24px; color: #333; }
   .message { margin-bottom: 20px; }
@@ -1326,7 +1326,10 @@ document.addEventListener('click', (e) => {
     const link = /** @type {HTMLElement} */ (e.target).closest('a[href]');
     if (link) {
         const href = link.getAttribute('href');
-        if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
+        if (href && href.startsWith('mailto:')) {
+            // Let mailto: links pass through — main process handles them via shell.openExternal
+            return;
+        } else if (href && (href.startsWith('http://') || href.startsWith('https://'))) {
             e.preventDefault();
             e.stopPropagation();
             openWebviewPane(href);
@@ -1725,7 +1728,7 @@ async function refreshActivatedProviders() {
     try {
         const ver = await api.getAppVersion();
         document.getElementById('app-version').textContent = ver;
-        document.title = `Sefaria Chat v${ver}`;
+        document.title = `Torah Chat v${ver}`;
     } catch { /* ignore */ }
 
     // Load changelog into About section

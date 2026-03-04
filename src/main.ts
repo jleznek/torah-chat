@@ -299,7 +299,7 @@ function createWindow(): void {
         ...bounds,
         minWidth: 600,
         minHeight: 400,
-        title: `Sefaria Chat v${app.getVersion()}`,
+        title: `Torah Chat v${app.getVersion()}`,
         icon: appIcon,
         backgroundColor: '#f8f6f1',
         webPreferences: {
@@ -319,7 +319,11 @@ function createWindow(): void {
 
     // Route external links to the embedded webview pane in the renderer
     mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-        mainWindow?.webContents.send('open-url', url);
+        if (url.startsWith('mailto:')) {
+            shell.openExternal(url);
+        } else {
+            mainWindow?.webContents.send('open-url', url);
+        }
         return { action: 'deny' };
     });
 
@@ -327,7 +331,11 @@ function createWindow(): void {
         // Allow loading our own renderer HTML; block everything else
         if (!url.startsWith('file://')) {
             event.preventDefault();
-            mainWindow?.webContents.send('open-url', url);
+            if (url.startsWith('mailto:')) {
+                shell.openExternal(url);
+            } else {
+                mainWindow?.webContents.send('open-url', url);
+            }
         }
     });
 
@@ -931,7 +939,7 @@ function setupIpcHandlers(): void {
             });
             printWin.close();
 
-            const tmpPath = path.join(app.getPath('temp'), `sefaria-chat-${Date.now()}.pdf`);
+            const tmpPath = path.join(app.getPath('temp'), `torah-chat-${Date.now()}.pdf`);
             fs.writeFileSync(tmpPath, pdfData);
 
             // Open the PDF in the app's embedded webview pane

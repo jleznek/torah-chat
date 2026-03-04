@@ -578,6 +578,28 @@ a:hover {
     text-decoration: underline;
 }
 
+/* ── "Powered by Sefaria" badge ───────────────────────────────────── */
+.powered-by-badge {
+    display: inline-block;
+    margin: 12px 0;
+    transition: opacity 0.2s;
+}
+.powered-by-badge:hover {
+    opacity: 0.85;
+}
+.powered-by-badge img {
+    display: block;
+    border-radius: 6px;
+}
+/* Centre badge in wizard card */
+.wizard-page .powered-by-badge {
+    display: block;
+    text-align: center;
+}
+.wizard-page .powered-by-badge img {
+    display: inline-block;
+}
+
 /* ── Provider selector ─────────────────────────────────────────────── */
 .provider-select {
     padding: 8px 12px;

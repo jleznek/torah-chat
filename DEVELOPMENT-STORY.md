@@ -1,6 +1,6 @@
-# Building Sefaria Chat: An AI-Assisted Development Story
+# Building Torah Chat: An AI-Assisted Development Story
 
-This document chronicles how Sefaria Chat was built through an iterative conversation between a developer and GitHub Copilot (Claude), from initial concept to published release — all in a single session.
+This document chronicles how Torah Chat was built through an iterative conversation between a developer and GitHub Copilot (Claude), from initial concept to published release — all in a single session.
 
 ---
 
@@ -33,7 +33,7 @@ The developer asked for a distributable installer. Using `electron-builder`, we 
 - Portable executable (no installation needed)
 - Proper app metadata (name, icon, description)
 
-The initial build targeted ARM64 (matching the developer's machine). This was later expanded to include x64 builds as well, with distinct artifact names to avoid conflicts: `Sefaria Chat-Setup-1.1.0-x64.exe`, `Sefaria Chat-Setup-1.1.0-arm64.exe`, etc.
+The initial build targeted ARM64 (matching the developer's machine). This was later expanded to include x64 builds as well, with distinct artifact names to avoid conflicts: `Torah Chat-Setup-1.1.0-x64.exe`, `Torah Chat-Setup-1.1.0-arm64.exe`, etc.
 
 ## Phase 4: Citation Auto-Linking
 
@@ -88,7 +88,7 @@ In packaged builds, electron-builder embeds the icon directly into the `.exe`, s
 
 We created a self-signed code signing certificate using PowerShell:
 ```
-New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Sefaria Chat, O=Sefaria"
+New-SelfSignedCertificate -Type CodeSigningCert -Subject "CN=Torah Chat, O=Sefaria"
 ```
 
 Configured `electron-builder` to use it via the `win.signtoolOptions` config in `package.json`. 
@@ -102,8 +102,8 @@ All executables are now signed. The signature verifies the files haven't been ta
 **Request**: *"I would like to create an x64 version as well, and then package and publish them on GitHub."*
 
 Updated the `package.json` build targets to produce both x64 and arm64 variants:
-- `Sefaria Chat-Setup-1.1.0-x64.exe` / `-arm64.exe` (NSIS installers)
-- `Sefaria Chat-Portable-1.1.0-x64.exe` / `-arm64.exe` (portable executables)
+- `Torah Chat-Setup-1.1.0-x64.exe` / `-arm64.exe` (NSIS installers)
+- `Torah Chat-Portable-1.1.0-x64.exe` / `-arm64.exe` (portable executables)
 
 Custom `artifactName` patterns in the NSIS and portable configs ensure each architecture gets a distinct filename.
 
@@ -112,8 +112,8 @@ Custom `artifactName` patterns in the NSIS and portable configs ensure each arch
 **Request**: *"Publish them on GitHub."*
 
 The app was published to two GitHub accounts:
-1. `jleznek-MSFT/sefaria-chat` (original)
-2. `jleznek/sefaria-chat` (personal account for community sharing)
+1. `jleznek-MSFT/torah-chat` (original)
+2. `jleznek/torah-chat` (personal account for community sharing)
 
 Using the GitHub CLI (`gh`), we:
 - Created the repository

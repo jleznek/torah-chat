@@ -1,4 +1,4 @@
-"""Generate the Sefaria Chat Technical Reference Word document."""
+"""Generate the Torah Chat Technical Reference Word document."""
 
 from docx import Document
 from docx.shared import Inches, Pt, Cm, Emu, RGBColor
@@ -71,7 +71,7 @@ doc.add_paragraph()
 doc.add_paragraph()
 title = doc.add_paragraph()
 title.alignment = WD_ALIGN_PARAGRAPH.CENTER
-run = title.add_run('Sefaria Chat')
+run = title.add_run('Torah Chat')
 run.font.size = Pt(36)
 run.font.color.rgb = RGBColor(0x1a, 0x1a, 0x2e)
 run.bold = True
@@ -140,7 +140,7 @@ doc.add_page_break()
 doc.add_heading('1. Project Overview', level=1)
 
 doc.add_paragraph(
-    'Sefaria Chat is a standalone Electron desktop application for exploring the Sefaria digital library '
+    'Torah Chat is a standalone Electron desktop application for exploring the Sefaria digital library '
     'of Jewish texts. It connects to Sefaria\'s MCP (Model Context Protocol) servers and supports '
     'multiple AI providers — Google Gemini, OpenAI, Anthropic Claude, and Ollama (local) — for '
     'AI-powered chat with tool calling.'
@@ -239,7 +239,7 @@ add_table(
         ['OpenAI API', 'api.openai.com', 'GPT/o-series LLM inference'],
         ['Anthropic API', 'api.anthropic.com', 'Claude LLM inference'],
         ['Ollama (local)', 'localhost:11434', 'Local LLM inference (no internet)'],
-        ['GitHub Releases', 'github.com/jleznek/sefaria-chat', 'Auto-update distribution'],
+        ['GitHub Releases', 'github.com/jleznek/torah-chat', 'Auto-update distribution'],
     ]
 )
 
@@ -516,12 +516,12 @@ doc.add_heading('Release Artifacts', level=2)
 add_table(
     ['Artifact', 'Type', 'Architectures'],
     [
-        ['Sefaria Chat-Setup-{ver}.exe', 'NSIS installer (universal)', 'x64 + arm64'],
-        ['Sefaria Chat-Setup-{ver}-x64.exe', 'NSIS installer', 'x64 only'],
-        ['Sefaria Chat-Setup-{ver}-arm64.exe', 'NSIS installer', 'arm64 only'],
-        ['Sefaria Chat-Portable-{ver}.exe', 'Portable (universal)', 'x64 + arm64'],
-        ['Sefaria Chat-Portable-{ver}-x64.exe', 'Portable', 'x64 only'],
-        ['Sefaria Chat-Portable-{ver}-arm64.exe', 'Portable', 'arm64 only'],
+        ['Torah Chat-Setup-{ver}.exe', 'NSIS installer (universal)', 'x64 + arm64'],
+        ['Torah Chat-Setup-{ver}-x64.exe', 'NSIS installer', 'x64 only'],
+        ['Torah Chat-Setup-{ver}-arm64.exe', 'NSIS installer', 'arm64 only'],
+        ['Torah Chat-Portable-{ver}.exe', 'Portable (universal)', 'x64 + arm64'],
+        ['Torah Chat-Portable-{ver}-x64.exe', 'Portable', 'x64 only'],
+        ['Torah Chat-Portable-{ver}-arm64.exe', 'Portable', 'arm64 only'],
         ['latest.yml', 'Auto-updater manifest', 'N/A'],
         ['*.blockmap', 'Differential update data', 'Per installer'],
     ]
@@ -549,7 +549,7 @@ doc.add_heading('Code Signing', level=2)
 doc.add_paragraph(
     'Windows builds are automatically signed using a certificate configured in package.json '
     '(signtoolOptions). The certificate must be installed in the Windows Certificate Store '
-    '(Current User/Personal) with subject name "Sefaria Chat".'
+    '(Current User/Personal) with subject name "Torah Chat".'
 )
 
 doc.add_heading('Distribution & Updates', level=2)
@@ -669,7 +669,7 @@ doc.add_paragraph(
 
 doc.add_heading('Code Signing', level=2)
 doc.add_paragraph(
-    'Windows distributables are signed with a SHA-256 certificate (subject: "Sefaria Chat") '
+    'Windows distributables are signed with a SHA-256 certificate (subject: "Torah Chat") '
     'to ensure binary integrity and prevent tampering warnings. The certificate is stored in '
     'the Windows Certificate Store, not in the repository.'
 )
@@ -681,6 +681,6 @@ doc.add_paragraph(
 )
 
 # ── Save ───────────────────────────────────────────────────────────────
-output_path = os.path.join('docs', 'Sefaria Chat - Technical Reference.docx')
+output_path = os.path.join('docs', 'Torah Chat - Technical Reference.docx')
 doc.save(output_path)
 print(f'Document saved to: {output_path}')
