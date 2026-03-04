@@ -1,7 +1,7 @@
 {
   "name": "torah-chat",
   "productName": "Torah Chat",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Explore Jewish texts from the Sefaria digital library, powered by AI",
   "author": {
     "name": "Jason Leznek"
@@ -64,13 +64,13 @@
       "icon": "assets/icon.ico"
     },
     "appx": {
-      "identityName": "JasonLeznek.TorahChat",
+      "identityName": "JasonLeznek.SefariaChat",
       "publisher": "CN=542357D7-3FB8-4981-A7C6-D9CD31401BA0",
       "publisherDisplayName": "Jason Leznek",
-      "applicationId": "TorahChat",
-      "displayName": "Torah Chat",
+      "applicationId": "SefariaChat",
+      "displayName": "Sefaria Chat",
       "languages": ["en-US"],
-      "artifactName": "Torah Chat ${version} ${arch}.${ext}"
+      "artifactName": "Sefaria Chat ${version} ${arch}.${ext}"
     },
     "mac": {
       "target": [
