@@ -1,0 +1,111 @@
+name: Build iOS App
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ios/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'ios/**'
+  workflow_dispatch:   # allows manual trigger from GitHub UI
+
+jobs:
+  build:
+    name: Xcode Build (Simulator)
+    runs-on: macos-15   # Xcode 16 comes pre-installed
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.app
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Build for iPad Simulator (no signing required)
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -project TorahChat.xcodeproj \
+            -scheme TorahChat \
+            -destination 'platform=iOS Simulator,name=iPad Pro 13-inch (M4),OS=latest' \
+            -configuration Debug \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build | xcpretty
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: build-logs
+          path: ios/build/
+          retention-days: 7
+
+  # ── Signed App Store build (only on version tags) ───────────────────
+  archive:
+    name: Archive & Export (App Store)
+    runs-on: macos-15
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.app
+
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          # Store your .p12 and password as GitHub secrets:
+          # Settings → Secrets → Actions → New repository secret
+          p12-file-base64: ${{ secrets.CERTIFICATE_P12_BASE64 }}
+          p12-password:    ${{ secrets.CERTIFICATE_PASSWORD }}
+
+      - name: Import provisioning profile
+        run: |
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          echo "${{ secrets.PROVISIONING_PROFILE_BASE64 }}" | base64 --decode \
+            > ~/Library/MobileDevice/Provisioning\ Profiles/distribution.mobileprovision
+
+      - name: Archive
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -project TorahChat.xcodeproj \
+            -scheme TorahChat \
+            -configuration Release \
+            -archivePath build/TorahChat.xcarchive \
+            archive
+
+      - name: Export IPA
+        working-directory: ios
+        run: |
+          xcodebuild \
+            -exportArchive \
+            -archivePath build/TorahChat.xcarchive \
+            -exportOptionsPlist ExportOptions.plist \
+            -exportPath build/export
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: TorahChat-${{ github.ref_name }}.ipa
+          path: ios/build/export/*.ipa
+          retention-days: 30
+
+      # Optional: auto-upload to TestFlight
+      # - name: Upload to TestFlight
+      #   uses: apple-actions/upload-testflight-build@v3
+      #   with:
+      #     app-path: ios/build/export/TorahChat.ipa
+      #     issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+      #     api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+      #     api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
