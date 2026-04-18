@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 5.9
 import PackageDescription
 
 let package = Package(
@@ -14,8 +14,6 @@ let package = Package(
             teamIdentifier: "",
             displayVersion: "1.0",
             bundleVersion: "1",
-            appIcon: .placeholder(icon: .book),
-            accentColor: .presetColor(.blue),
             supportedDeviceFamilies: [
                 .pad,
                 .phone,
@@ -25,9 +23,6 @@ let package = Package(
                 .landscapeRight,
                 .landscapeLeft,
                 .portraitUpsideDown(.when(deviceFamilies: [.pad])),
-            ],
-            capabilities: [
-                .outgoingNetworkConnections(),
             ]
         ),
     ],
